@@ -2,19 +2,19 @@
 <div>
   <Nav />
   <router-view/>
-  <footer class="footer">
-      <p class="has-text-centered">Copyright (c) 2023</p>
-  </footer>
+  <Footer/>
 </div>
 </template>
 
 <script>
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 
 export default {
     name: 'App',
     components: {
         Nav,
+        Footer
     }
 }
 </script>
