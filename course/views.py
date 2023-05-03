@@ -1,3 +1,31 @@
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-# Create your views here.
+from .models import Course
+from .serializers import CourseListSerializer, UserSerializer
+
+
+@api_view(["GET"])
+def get_courses(request):
+    category_id = request.GET.get("category_id", "")
+    courses = Course.objects.filter(status=Course.PUBLISHED)
+
+    if category_id:
+        courses = courses.filter(categories__in=[int(category_id)])
+
+    serializer = CourseListSerializer(courses, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_author_courses(request, user_id):
+    user = User.objects.get(pk=user_id)
+    courses = user.courses.filter(status=Course.PUBLISHED)
+
+    user_serializer = UserSerializer(user, many=False)
+    courses_serializer = CourseListSerializer(courses, many=True)
+
+    return Response(
+        {"courses": courses_serializer.data, "created_by": user_serializer.data}
+    )
