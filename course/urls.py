@@ -4,5 +4,6 @@ from course import views
 
 urlpatterns = [
     path("", views.get_courses),
+    path("<slug:slug>/", views.get_course),
     path("get_author_courses/<int:user_id>/", views.get_author_courses),
 ]
