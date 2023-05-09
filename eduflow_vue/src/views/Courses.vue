@@ -47,8 +47,8 @@
                                     </div>
                                     <div class="content">
                                         {{ course.short_description }}
-                                    <br>
-                                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                                        <br>
+                                        <router-link :to="{name: 'Course', params: {slug: course.slug}}">More</router-link>
                                     </div>
                                 </div>
                             </div>

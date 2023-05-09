@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Course
-from .serializers import CourseListSerializer, UserSerializer
+from .serializers import CourseListSerializer, UserSerializer, CourseDetailSerializer
 
 
 @api_view(["GET"])
@@ -15,6 +15,13 @@ def get_courses(request):
         courses = courses.filter(categories__in=[int(category_id)])
 
     serializer = CourseListSerializer(courses, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_course(request, slug):
+    course = Course.objects.get(slug=slug)
+    serializer = CourseDetailSerializer(course)
     return Response(serializer.data)
 
 
