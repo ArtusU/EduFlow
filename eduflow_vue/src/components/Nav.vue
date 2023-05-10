@@ -13,12 +13,16 @@
       <div class="navbar-end">
           <div class="navbar-item">
               <div class="buttons">
-                      <router-link to="/dashboard/create-course" class="button is-primary">Create course</router-link>
-                      <router-link to="/dashboard/my-account" class="button is-info">My account</router-link>
+                <template v-if="$store.state.user.isAuthenticated">
+                    <router-link to="/dashboard/create-course" class="button is-primary">Create course</router-link>
+                    <router-link to="/dashboard/my-account" class="button is-info">My account</router-link>
+                </template>
 
-                      <router-link to="/sign-up" class="button is-primary"><strong>Sign up</strong></router-link>
-                      <router-link to="/log-in" class="button is-light">Log in</router-link>
-              </div>
+                <template v-else>
+                    <router-link to="/sign-up" class="button is-primary"><strong>Sign up</strong></router-link>
+                    <router-link to="/log-in" class="button is-light">Log in</router-link>
+                </template>
+                </div>
           </div>
       </div>
   </div>
