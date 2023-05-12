@@ -46,3 +46,32 @@ class Course(models.Model):
             return settings.WEBSITE_URL + self.image.url
         else:
             return 'http://bulma.io/images/placeholders/1280x960.png'
+
+
+class Lesson(models.Model):
+    DRAFT = 'draft'
+    PUBLISHED = 'published'
+
+    CHOICES_STATUS = (
+        (DRAFT, 'Draft'),
+        (PUBLISHED, 'Published')
+    )
+
+    ARTICLE = 'article'
+    QUIZ = 'quiz'
+    VIDEO = 'video'
+
+    CHOICES_LESSON_TYPE = (
+        (ARTICLE, 'Article'),
+        (QUIZ, 'Quiz'),
+        (VIDEO, 'Video'),
+    )
+
+    course = models.ForeignKey(Course, related_name='lessons', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    slug = models.SlugField()
+    short_description = models.TextField(blank=True, null=True)
+    long_description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=20, choices=CHOICES_STATUS, default=PUBLISHED)
+    lesson_type = models.CharField(max_length=20, choices=CHOICES_LESSON_TYPE, default=ARTICLE)
+    video_id = models.CharField(max_length=20, blank=True, null=True)
