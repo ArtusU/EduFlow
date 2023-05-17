@@ -12,10 +12,13 @@
                     <div class="column is-2">
                         <h2>Table of contents</h2>
                         <ul>
-                            <li>Introduction</li>
-                            <li>Introduction</li>
-                            <li>Introduction</li>
-                            <li>Introduction</li>
+                            <li
+                                v-for="lesson in lessons"
+                                v-bind:key="lesson.id"
+                            >
+                                <a @click="setActiveLesson(lesson)">{{ lesson.title }}</a>
+                            </li>
+                            
                         </ul>
                     </div>
                     <div class="column is-10">
@@ -41,7 +44,8 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            course: [],
+            course: {},
+            lessons: []
         }
     },
     mounted() {
@@ -56,7 +60,8 @@ export default {
             .then(response => {
                 console.log(response.data)
 
-                this.course = response.data
+                this.course = response.data.course
+                this.lessons = response.data.lessons
 
             })
         

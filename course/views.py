@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Course
-from .serializers import CourseListSerializer, UserSerializer, CourseDetailSerializer
+from .serializers import CourseListSerializer, UserSerializer, CourseDetailSerializer, LessonListSerializer
 
 
 @api_view(["GET"])
@@ -36,3 +36,15 @@ def get_author_courses(request, user_id):
     return Response(
         {"courses": courses_serializer.data, "created_by": user_serializer.data}
     )
+
+
+@api_view(['GET'])
+def get_course(request, slug):
+    course = Course.objects.filter(status=Course.PUBLISHED).get(slug=slug)
+    course_serializer = CourseDetailSerializer(course)
+    lesson_serializer = LessonListSerializer(course.lessons.all(), many=True)
+
+    return Response({
+        'course': course_serializer.data,
+        'lessons': lesson_serializer.data
+    })
