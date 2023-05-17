@@ -75,3 +75,9 @@ class Lesson(models.Model):
     status = models.CharField(max_length=20, choices=CHOICES_STATUS, default=PUBLISHED)
     lesson_type = models.CharField(max_length=20, choices=CHOICES_LESSON_TYPE, default=ARTICLE)
     video_id = models.CharField(max_length=20, blank=True, null=True)
+    
+    class Meta:
+        verbose_name_plural = 'Lessons'
+
+    def __str__(self):
+        return self.title

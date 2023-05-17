@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Category, Course
+from .models import Category, Course, Lesson
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,3 +26,16 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ("id", "title", "slug", "long_description", "get_image")
+
+
+class LessonListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = (
+            "id",
+            "title",
+            "slug",
+            "lesson_type",
+            "short_description",
+            "long_description",
+        )
