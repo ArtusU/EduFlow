@@ -23,8 +23,13 @@
                     </div>
                     <div class="column is-10">
                         <template v-if="$store.state.user.isAuthenticated">
-                            <h2>Active Lesson title</h2>
-                            <p>{{ course.long_description }}</p>
+                            <template v-if="activeLesson">
+                                <h2>{{ activeLesson.title }}</h2>
+                                <p>{{ activeLesson.long_description }}</p>
+                            </template>
+                            <template v-else>
+                                {{ course.long_description }}
+                            </template>
                         </template>
                         <template v-else>
                             <h2>Restricted access</h2>
@@ -45,7 +50,8 @@ export default {
     data() {
         return {
             course: {},
-            lessons: []
+            lessons: [],
+            activeLesson: null,
         }
     },
     mounted() {
@@ -66,6 +72,11 @@ export default {
             })
         
     },
+    methods: {
+        setActiveLesson(lesson) {
+            this.activeLesson = lesson
+        },
+    }
 
 }
 </script>
