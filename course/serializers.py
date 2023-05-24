@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Category, Course, Lesson
+from .models import Category, Comment, Course, Lesson
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -39,3 +39,9 @@ class LessonListSerializer(serializers.ModelSerializer):
             "short_description",
             "long_description",
         )
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("id", "name", "content", "created_at")
