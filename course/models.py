@@ -81,3 +81,12 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Comment(models.Model):
+    course = models.ForeignKey(Course, related_name='comments', on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, related_name='comments', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
