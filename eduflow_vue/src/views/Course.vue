@@ -26,6 +26,35 @@
                             <template v-if="activeLesson">
                                 <h2>{{ activeLesson.title }}</h2>
                                 <p>{{ activeLesson.long_description }}</p>
+                                <form v-on:submit.prevent="submitComment()">
+                                    <div class="field">
+                                        <label class="label">Name</label>
+                                        <div class="control">
+                                            <input type="text" class="input" v-model="comment.name">
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label class="label">Content</label>
+                                        <div class="control">
+                                            <textarea class="textarea" v-model="comment.content"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div 
+                                        class="notification is-danger"
+                                        v-for="error in errors"
+                                        v-bind:key="error"
+                                    >
+                                        {{ error }}
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <button class="button is-link">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </template>
                             <template v-else>
                                 {{ course.long_description }}
@@ -51,6 +80,10 @@ export default {
         return {
             course: {},
             lessons: [],
+            comment: {
+                name: '',
+                content: ''
+            },
             activeLesson: null,
         }
     },
@@ -64,7 +97,7 @@ export default {
         axios
             .get(`/courses/${slug}/`)
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
 
                 this.course = response.data.course
                 this.lessons = response.data.lessons
@@ -76,6 +109,21 @@ export default {
         setActiveLesson(lesson) {
             this.activeLesson = lesson
         },
+        submitComment() {
+            console.log('comment submited')
+
+            axios
+                .post(`/courses/${this.course.slug}/${this.activeLesson.slug}/`, this.comment)
+                .then(response => {
+                    this.comment.name = ''
+                    this.comment.content = ''
+                    alert('comment submitted')
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+
+        }
     }
 
 }
