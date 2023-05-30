@@ -74,3 +74,10 @@ def add_comment(request, course_slug, lesson_slug):
     print(serializer.data)
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_comments(request, course_slug, lesson_slug):
+    lesson = Lesson.objects.get(slug=lesson_slug)
+    serializer = CommentsSerializer(lesson.comments.all(), many=True)
+    return Response(serializer.data)

@@ -26,6 +26,22 @@
                             <template v-if="activeLesson">
                                 <h2>{{ activeLesson.title }}</h2>
                                 <p>{{ activeLesson.long_description }}</p>
+
+                                <article 
+                                    class="media box"
+                                    v-for="comment in comments"
+                                    v-bind:key="comment.id"
+                                    >
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
+                                                {{ comment.content }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+
                                 <form v-on:submit.prevent="submitComment()">
                                     <div class="field">
                                         <label class="label">Name</label>
@@ -80,6 +96,7 @@ export default {
         return {
             course: {},
             lessons: [],
+            comments: [],
             comment: {
                 name: '',
                 content: ''
@@ -106,9 +123,6 @@ export default {
         
     },
     methods: {
-        setActiveLesson(lesson) {
-            this.activeLesson = lesson
-        },
         submitComment() {
             console.log('comment submited')
 
@@ -123,7 +137,20 @@ export default {
                     console.log(error)
                 })
 
-        }
+        },
+        setActiveLesson(lesson) {
+            this.activeLesson = lesson;
+            this.getComments();
+        },
+        getComments() {
+            axios
+                .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-comments/`)
+                .then(response => {
+                    console.log(response.data)
+                    this.comments = response.data
+                })
+        },
+
     }
 
 }
