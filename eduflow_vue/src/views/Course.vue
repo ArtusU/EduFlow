@@ -97,6 +97,7 @@ export default {
             course: {},
             lessons: [],
             comments: [],
+            errors: [],
             comment: {
                 name: '',
                 content: ''
@@ -126,7 +127,18 @@ export default {
         submitComment() {
             console.log('comment submited')
 
-            axios
+            this.errors = []
+
+            if (this.comment.name == '') {
+                this.errors.push('The name must be filled out')
+            }
+            if (this.comment.content == '') {
+                this.errors.push('The content must be filled out')
+            }
+            console.log(this.errors)
+
+            if (!this.errors.length) {    
+                axios
                 .post(`/courses/${this.course.slug}/${this.activeLesson.slug}/`, this.comment)
                 .then(response => {
                     this.comment.name = ''
@@ -136,6 +148,7 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+            }
 
         },
         setActiveLesson(lesson) {
@@ -146,7 +159,6 @@ export default {
             axios
                 .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-comments/`)
                 .then(response => {
-                    console.log(response.data)
                     this.comments = response.data
                 })
         },
