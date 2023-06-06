@@ -143,6 +143,7 @@ export default {
                 .then(response => {
                     this.comment.name = ''
                     this.comment.content = ''
+                    this.comments.push(response.data)
                     alert('comment submitted')
                 })
                 .catch(error => {
@@ -159,9 +160,11 @@ export default {
             axios
                 .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-comments/`)
                 .then(response => {
+                    console.log(response.data)
+
                     this.comments = response.data
                 })
-        },
+        }
 
     }
 
