@@ -27,31 +27,7 @@
                                 v-for="course in courses"
                                 v-bind:key="course.id"
                             >
-                            <div class="card">
-                                <div class="card-image">
-                                    <figure class="image is-4by3">
-                                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                                    </figure>
-                                </div>
-
-                                <div class="card-content">
-                                    <div class="media">
-                                    <!-- <div class="media-left">
-                                        <figure class="image is-48x48">
-                                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                                        </figure>
-                                    </div> -->
-                                    <div class="media-content">
-                                        <p class="title is-4">{{ course.title }}</p>
-                                    </div>
-                                    </div>
-                                    <div class="content">
-                                        {{ course.short_description }}
-                                        <br>
-                                        <router-link :to="{name: 'Course', params: {slug: course.slug}}">More</router-link>
-                                    </div>
-                                </div>
-                            </div>
+                            <CourseItem :course="course" />
 
                         </div>
                         <div class="column is-12">
@@ -72,6 +48,7 @@
 
 
 <script>
+import CourseItem from '@/components/CourseItem.vue'
 import axios from 'axios'
 
 export default {
@@ -80,8 +57,10 @@ export default {
             courses: [],
         }
     },
+    components: {
+        CourseItem
+    },
     mounted() {
-        console.log('mounted')
 
         document.title = 'Courses | EduFlow'
 
