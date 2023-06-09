@@ -33,6 +33,15 @@
           <div class="column is-12 has-text-centered">
             <a href="/sign-up" class="button is-info is-size-3 mt-6 mb-6">Click to get started</a>
           </div>
+          <hr>
+          <div 
+              class="column is-3"
+              v-for="course in courses"
+              v-bind:key="course.id"
+          >
+              <CourseItem :course="course" />
+          </div>
+
         </div>
       </div>
     </section>
@@ -40,8 +49,31 @@
 </template>
 
 <script>
+import CourseItem from '@/components/CourseItem.vue'
+import axios from 'axios'
 
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  data() {
+      return {
+          courses: []
+      }
+  },
+  components: {
+      CourseItem
+  },
+  mounted() {
+      console.log('mounted')
+
+      document.title = 'Welcome | EduFlow'
+
+      axios
+          .get('courses/get_frontpage_courses/')
+          .then(response => {
+              console.log(response.data)
+
+              this.courses = response.data
+          })
+  }
 }
 </script>
