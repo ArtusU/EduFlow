@@ -2,8 +2,9 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Comment, Course, Lesson
+from .models import Category, Comment, Course, Lesson
 from .serializers import (
+    CategorySerializer,
     CommentsSerializer,
     CourseDetailSerializer,
     CourseListSerializer,
@@ -28,6 +29,13 @@ def get_courses(request):
 def get_frontpage_courses(request):
     courses = Course.objects.all()[0:4]
     serializer = CourseListSerializer(courses, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_categories(request):
+    categories = Category.objects.all()
+    serializer = CategorySerializer(categories, many=True)
     return Response(serializer.data)
 
 
