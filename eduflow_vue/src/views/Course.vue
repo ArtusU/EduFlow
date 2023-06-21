@@ -105,14 +105,14 @@ export default {
             activeLesson: null,
         }
     },
-    mounted() {
+    async mounted() {
         console.log('mounted')
 
         document.title = 'Courses | EduFlow'
 
         const slug = this.$route.params.slug
 
-        axios
+        await axios
             .get(`/courses/${slug}/`)
             .then(response => {
                 // console.log(response.data)
@@ -121,6 +121,7 @@ export default {
                 this.lessons = response.data.lessons
 
             })
+        document.title = this.course.title
         
     },
     methods: {

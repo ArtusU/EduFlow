@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 
 from .models import Category, Comment, Course, Lesson
@@ -25,21 +25,27 @@ def get_courses(request):
     return Response(serializer.data)
 
 
-@api_view(["GET"])
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def get_frontpage_courses(request):
     courses = Course.objects.all()[0:4]
     serializer = CourseListSerializer(courses, many=True)
     return Response(serializer.data)
 
 
-@api_view(["GET"])
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def get_categories(request):
     categories = Category.objects.all()
     serializer = CategorySerializer(categories, many=True)
     return Response(serializer.data)
 
 
-@api_view(["GET"])
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def get_course(request, slug):
     course = Course.objects.get(slug=slug)
     serializer = CourseDetailSerializer(course)
@@ -59,15 +65,21 @@ def get_author_courses(request, user_id):
     )
 
 
-@api_view(["GET"])
+@api_view(['GET'])
 def get_course(request, slug):
     course = Course.objects.filter(status=Course.PUBLISHED).get(slug=slug)
     course_serializer = CourseDetailSerializer(course)
     lesson_serializer = LessonListSerializer(course.lessons.all(), many=True)
 
-    return Response(
-        {"course": course_serializer.data, "lessons": lesson_serializer.data}
-    )
+    if request.user.is_authenticated:
+        course_data = course_serializer.data
+    else:
+        course_data = {}
+
+    return Response({
+        'course': course_data,
+        'lessons': lesson_serializer.data
+    })
 
 
 @api_view(["POST"])
