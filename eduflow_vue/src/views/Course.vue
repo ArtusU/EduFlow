@@ -62,51 +62,53 @@
                                         </template>
                                     </div>
                                 </template>
-
-                                <article 
-                                    class="media box"
-                                    v-for="comment in comments"
-                                    v-bind:key="comment.id"
-                                    >
-                                    <div class="media-content">
-                                        <div class="content">
-                                            <p>
-                                                <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
-                                                {{ comment.content }}
-                                            </p>
+                                
+                                <template v-if="activeLesson.lesson_type === 'article'">
+                                    <article 
+                                        class="media box"
+                                        v-for="comment in comments"
+                                        v-bind:key="comment.id"
+                                        >
+                                        <div class="media-content">
+                                            <div class="content">
+                                                <p>
+                                                    <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
+                                                    {{ comment.content }}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </article>
+                                    </article>
 
-                                <form v-on:submit.prevent="submitComment()">
-                                    <div class="field">
-                                        <label class="label">Name</label>
-                                        <div class="control">
-                                            <input type="text" class="input" v-model="comment.name">
+                                    <form v-on:submit.prevent="submitComment()">
+                                        <div class="field">
+                                            <label class="label">Name</label>
+                                            <div class="control">
+                                                <input type="text" class="input" v-model="comment.name">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="field">
-                                        <label class="label">Content</label>
-                                        <div class="control">
-                                            <textarea class="textarea" v-model="comment.content"></textarea>
+                                        <div class="field">
+                                            <label class="label">Content</label>
+                                            <div class="control">
+                                                <textarea class="textarea" v-model="comment.content"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div 
-                                        class="notification is-danger"
-                                        v-for="error in errors"
-                                        v-bind:key="error"
-                                    >
-                                        {{ error }}
-                                    </div>
-
-                                    <div class="field">
-                                        <div class="control">
-                                            <button class="button is-link">Submit</button>
+                                        <div 
+                                            class="notification is-danger"
+                                            v-for="error in errors"
+                                            v-bind:key="error"
+                                        >
+                                            {{ error }}
                                         </div>
-                                    </div>
-                                </form>
+
+                                        <div class="field">
+                                            <div class="control">
+                                                <button class="button is-link">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </template>
                             </template>
                             <template v-else>
                                 {{ course.long_description }}
