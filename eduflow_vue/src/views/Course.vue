@@ -27,6 +27,42 @@
                                 <h2>{{ activeLesson.title }}</h2>
                                 <p>{{ activeLesson.long_description }}</p>
 
+                                <template v-if="activeLesson.lesson_type === 'quiz'">
+                                    <div>
+                                        <h3>{{ quiz.question }}</h3>
+
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" :value="quiz.op1" v-model="selectedAnswer"> {{ quiz.op1 }}
+                                            </label>
+                                        </div>
+
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" :value="quiz.op2" v-model="selectedAnswer"> {{ quiz.op2 }}
+                                            </label>
+                                        </div>
+
+                                        <div class="control">
+                                            <label class="radio">
+                                                <input type="radio" :value="quiz.op3" v-model="selectedAnswer"> {{ quiz.op3 }}
+                                            </label>
+                                        </div>
+
+                                        <div class="control mt-4">
+                                            <button class="button is-info" @click="submitQuiz">Submit</button>
+                                        </div>
+
+                                        <template v-if="quizResult == 'correct'">
+                                            <div class="notification is-success mt-4">Correct :-D</div>
+                                        </template>
+
+                                        <template v-if="quizResult == 'incorrect'">
+                                            <div class="notification is-danger mt-4">Wrong :-( Please try again!</div>
+                                        </template>
+                                    </div>
+                                </template>
+
                                 <article 
                                     class="media box"
                                     v-for="comment in comments"
@@ -103,6 +139,8 @@ export default {
                 content: ''
             },
             activeLesson: null,
+            quiz: {},
+            selectedAnswer: null
         }
     },
     async mounted() {
@@ -155,7 +193,20 @@ export default {
         },
         setActiveLesson(lesson) {
             this.activeLesson = lesson;
-            this.getComments();
+            if (lesson.lesson_type === 'quiz') {
+                this.getQuiz()
+            } else {
+                this.getComments()
+            }
+        },
+        getQuiz() {
+            axios
+                .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-quiz/`)
+                .then(response => {
+                    console.log(response.data)
+
+                    this.quiz = response.data
+                })
         },
         getComments() {
             axios
