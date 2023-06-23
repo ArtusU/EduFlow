@@ -111,3 +111,6 @@ class Quiz(models.Model):
 
     class Meta:
         verbose_name_plural = "Quizzes"
+        
+    def __str__(self):
+        return f"Lesson: {self.lesson} - {self.question}"
