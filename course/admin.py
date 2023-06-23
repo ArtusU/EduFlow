@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Comment, Course, Lesson
+from .models import Category, Comment, Course, Lesson, Quiz
 
 
 class LessonCommentInline(admin.TabularInline):
@@ -19,3 +19,4 @@ admin.site.register(Course)
 admin.site.register(Category)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Comment)
+admin.site.register(Quiz)

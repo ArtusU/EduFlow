@@ -1,16 +1,29 @@
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.response import Response
 
-from .models import Category, Comment, Course, Lesson
+from .models import Category, Comment, Course, Lesson, Quiz
 from .serializers import (
     CategorySerializer,
     CommentsSerializer,
     CourseDetailSerializer,
     CourseListSerializer,
     LessonListSerializer,
+    QuizSerializer,
     UserSerializer,
 )
+
+
+@api_view(["GET"])
+def get_quiz(request, course_slug, lesson_slug):
+    lesson = Lesson.objects.get(slug=lesson_slug)
+    quiz = lesson.quizzes.first()
+    serializer = QuizSerializer(quiz)
+    return Response(serializer.data)
 
 
 @api_view(["GET"])
@@ -25,7 +38,7 @@ def get_courses(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
 def get_frontpage_courses(request):
@@ -34,7 +47,7 @@ def get_frontpage_courses(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
 def get_categories(request):
@@ -43,7 +56,7 @@ def get_categories(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
 def get_course(request, slug):
@@ -65,7 +78,7 @@ def get_author_courses(request, user_id):
     )
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def get_course(request, slug):
     course = Course.objects.filter(status=Course.PUBLISHED).get(slug=slug)
     course_serializer = CourseDetailSerializer(course)
@@ -76,10 +89,7 @@ def get_course(request, slug):
     else:
         course_data = {}
 
-    return Response({
-        'course': course_data,
-        'lessons': lesson_serializer.data
-    })
+    return Response({"course": course_data, "lessons": lesson_serializer.data})
 
 
 @api_view(["POST"])
