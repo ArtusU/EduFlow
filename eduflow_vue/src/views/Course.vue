@@ -140,6 +140,7 @@ export default {
             },
             activeLesson: null,
             quiz: {},
+            quizResult: null,
             selectedAnswer: null
         }
     },
@@ -163,6 +164,19 @@ export default {
         
     },
     methods: {
+        submitQuiz() {
+            this.quizResult = null
+
+            if (this.selectedAnswer) {
+                if (this.selectedAnswer === this.quiz.answer) {
+                    this.quizResult = 'correct'
+                } else {
+                    this.quizResult = 'incorrect'
+                }
+            } else {
+                alert('Select answer first')
+            }
+        },
         submitComment() {
             console.log('comment submited')
 
