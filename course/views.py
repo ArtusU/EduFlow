@@ -95,7 +95,6 @@ def get_course(request, slug):
 @api_view(["POST"])
 def add_comment(request, course_slug, lesson_slug):
     data = request.data
-    print(data)
     course = Course.objects.get(slug=course_slug)
     lesson = Lesson.objects.get(slug=lesson_slug)
 
@@ -108,7 +107,6 @@ def add_comment(request, course_slug, lesson_slug):
     )
 
     serializer = CommentsSerializer(comment)
-    print(serializer.data)
 
     return Response(serializer.data)
 
