@@ -64,21 +64,11 @@
                                 </template>
                                 
                                 <template v-if="activeLesson.lesson_type === 'article'">
-                                    <article 
-                                        class="media box"
+                                    <CourseComment
                                         v-for="comment in comments"
                                         v-bind:key="comment.id"
-                                        >
-                                        <div class="media-content">
-                                            <div class="content">
-                                                <p>
-                                                    <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
-                                                    {{ comment.content }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </article>
-
+                                        v-bind:comment="comment"
+                                    />
                                     <form v-on:submit.prevent="submitComment()">
                                         <div class="field">
                                             <label class="label">Name</label>
@@ -128,8 +118,12 @@
 
 <script>
 import axios from 'axios'
+import CourseComment from '@/components/CourseComment'
 
 export default {
+    components: {
+        CourseComment,
+    },
     data() {
         return {
             course: {},
