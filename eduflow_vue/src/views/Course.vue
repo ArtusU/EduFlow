@@ -26,43 +26,12 @@
                             <template v-if="activeLesson">
                                 <h2>{{ activeLesson.title }}</h2>
                                 <p>{{ activeLesson.long_description }}</p>
-
-                                <template v-if="activeLesson.lesson_type === 'quiz'">
-                                    <div>
-                                        <h3>{{ quiz.question }}</h3>
-
-                                        <div class="control">
-                                            <label class="radio">
-                                                <input type="radio" :value="quiz.op1" v-model="selectedAnswer"> {{ quiz.op1 }}
-                                            </label>
-                                        </div>
-
-                                        <div class="control">
-                                            <label class="radio">
-                                                <input type="radio" :value="quiz.op2" v-model="selectedAnswer"> {{ quiz.op2 }}
-                                            </label>
-                                        </div>
-
-                                        <div class="control">
-                                            <label class="radio">
-                                                <input type="radio" :value="quiz.op3" v-model="selectedAnswer"> {{ quiz.op3 }}
-                                            </label>
-                                        </div>
-
-                                        <div class="control mt-4">
-                                            <button class="button is-info" @click="submitQuiz">Submit</button>
-                                        </div>
-
-                                        <template v-if="quizResult == 'correct'">
-                                            <div class="notification is-success mt-4">Correct :-D</div>
-                                        </template>
-
-                                        <template v-if="quizResult == 'incorrect'">
-                                            <div class="notification is-danger mt-4">Wrong :-( Please try again!</div>
-                                        </template>
-                                    </div>
-                                </template>
                                 
+                                <template v-if="activeLesson.lesson_type === 'quiz'">
+                                    <Quiz
+                                        v-bind:quiz="quiz"
+                                    />
+                                </template>
                                 <template v-if="activeLesson.lesson_type === 'article'">
                                     <CourseComment
                                         v-for="comment in comments"
@@ -95,12 +64,14 @@
 <script>
 import AddComment from '@/components/AddComment'
 import CourseComment from '@/components/CourseComment'
+import Quiz from '@/components/Quiz'
 import axios from 'axios'
 
 export default {
     components: {
         CourseComment,
         AddComment,
+        Quiz,
     },
     data() {
         return {
@@ -110,8 +81,6 @@ export default {
             errors: [],
             activeLesson: null,
             quiz: {},
-            quizResult: null,
-            selectedAnswer: null
         }
     },
     async mounted() {
@@ -136,19 +105,6 @@ export default {
     methods: {
         submitComment(comment) {
             this.comments.push(comment)
-        },
-        submitQuiz() {
-            this.quizResult = null
-
-            if (this.selectedAnswer) {
-                if (this.selectedAnswer === this.quiz.answer) {
-                    this.quizResult = 'correct'
-                } else {
-                    this.quizResult = 'incorrect'
-                }
-            } else {
-                alert('Select answer first')
-            }
         },
         setActiveLesson(lesson) {
             this.activeLesson = lesson;
