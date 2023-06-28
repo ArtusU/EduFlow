@@ -38,6 +38,7 @@ class LessonListSerializer(serializers.ModelSerializer):
             "lesson_type",
             "short_description",
             "long_description",
+            "video_id",
         )
 
 

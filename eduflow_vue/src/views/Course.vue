@@ -32,6 +32,13 @@
                                         v-bind:quiz="quiz"
                                     />
                                 </template>
+
+                                <template v-if="activeLesson.lesson_type === 'video'">
+                                    <Video
+                                        v-bind:video_id="activeLesson.video_id"
+                                    />
+                                </template>
+
                                 <template v-if="activeLesson.lesson_type === 'article'">
                                     <CourseComment
                                         v-for="comment in comments"
@@ -65,6 +72,7 @@
 import AddComment from '@/components/AddComment'
 import CourseComment from '@/components/CourseComment'
 import Quiz from '@/components/Quiz'
+import Video from '@/components/Video'
 import axios from 'axios'
 
 export default {
@@ -72,6 +80,7 @@ export default {
         CourseComment,
         AddComment,
         Quiz,
+        Video,
     },
     data() {
         return {
