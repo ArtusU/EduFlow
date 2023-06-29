@@ -39,3 +39,19 @@ def track_started(request, course_slug, lesson_slug):
     serializer = ActivitySerializer(activity)
 
     return Response(serializer.data)
+
+
+@api_view(["POST"])
+def mark_as_done(request, course_slug, lesson_slug):
+    course = Course.objects.get(slug=course_slug)
+    lesson = Lesson.objects.get(slug=lesson_slug)
+
+    activity = Activity.objects.get(
+        created_by=request.user, course=course, lesson=lesson
+    )
+    activity.status = Activity.DONE
+    activity.save()
+
+    serializer = ActivitySerializer(activity)
+
+    return Response(serializer.data)

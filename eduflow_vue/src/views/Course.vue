@@ -25,6 +25,11 @@
                         <template v-if="$store.state.user.isAuthenticated">
                             <template v-if="activeLesson">
                                 <h2>{{ activeLesson.title }}</h2>
+                                <span class="tag is-warning" v-if="activity.status == 'started'" @click="markAsDone">Started (mark as done)</span>
+                                <span class="tag is-success" v-else>Done</span>
+
+                                <hr>
+
                                 <p>{{ activeLesson.long_description }}</p>
                                 
                                 <template v-if="activeLesson.lesson_type === 'quiz'">
@@ -90,6 +95,7 @@ export default {
             errors: [],
             activeLesson: null,
             quiz: {},
+            activity: {}
         }
     },
     async mounted() {
@@ -127,6 +133,15 @@ export default {
         trackStarted() {
             axios
                 .post(`activities/track_started/${this.$route.params.slug}/${this.activeLesson.slug}/`)
+                .then(response => {
+                    console.log(response.data)
+
+                    this.activity = response.data
+                })
+        },
+        markAsDone() {
+            axios
+                .post(`activities/mark_as_done/${this.$route.params.slug}/${this.activeLesson.slug}/`)
                 .then(response => {
                     console.log(response.data)
 
