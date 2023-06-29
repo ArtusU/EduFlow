@@ -122,12 +122,21 @@ export default {
             } else {
                 this.getComments()
             }
+            this.trackStarted()
+        },
+        trackStarted() {
+            axios
+                .post(`activities/track_started/${this.$route.params.slug}/${this.activeLesson.slug}/`)
+                .then(response => {
+                    console.log(response.data)
+
+                    this.activity = response.data
+                })
         },
         getQuiz() {
             axios
                 .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-quiz/`)
                 .then(response => {
-                    console.log(response.data)
 
                     this.quiz = response.data
                 })
@@ -136,7 +145,6 @@ export default {
             axios
                 .get(`courses/${this.course.slug}/${this.activeLesson.slug}/get-comments/`)
                 .then(response => {
-                    console.log(response.data)
 
                     this.comments = response.data
                 })
