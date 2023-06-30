@@ -116,3 +116,16 @@ def get_comments(request, course_slug, lesson_slug):
     lesson = Lesson.objects.get(slug=lesson_slug)
     serializer = CommentsSerializer(lesson.comments.all(), many=True)
     return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_author_courses(request, user_id):
+    user = User.objects.get(pk=user_id)
+    courses = user.courses.filter(status=Course.PUBLISHED)
+
+    user_serializer = UserSerializer(user, many=False)
+    courses_serializer = CourseListSerializer(courses, many=True)
+
+    return Response(
+        {"courses": courses_serializer.data, "created_by": user_serializer.data}
+    )
