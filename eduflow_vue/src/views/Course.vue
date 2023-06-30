@@ -3,10 +3,12 @@
         <div class="hero is-info">
             <div class="hero-body has-text-centered">
                 <h1 class="title">{{ course.title }}</h1>
-
-                <p>
+                <router-link
+                    :to="{name: 'Author', params: {id: course.created_by.id }}"
+                    class="subtitle"
+                >
                     By {{ course.created_by.first_name + ' ' + course.created_by.last_name }}
-                </p>
+                </router-link>
             </div>
         </div>
 
