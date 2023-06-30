@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import About from '../views/AboutView.vue'
-import Courses from '../views/Courses.vue'
+import Author from '../views/Author.vue'
 import Course from '../views/Course.vue'
-import SignUp from '../views/SignUp.vue'
+import Courses from '../views/Courses.vue'
+import HomeView from '../views/HomeView.vue'
 import LogIn from '../views/LogIn.vue'
+import SignUp from '../views/SignUp.vue'
 
 import MyAccount from '../views/dashboard/MyAccount.vue'
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/courses/:slug',
     name: 'Course',
     component: Course
+  },
+  {
+    path: '/authors/:id',
+    name: 'Author',
+    component: Author
   },
   {
     path: '/dashboard/my-account',
