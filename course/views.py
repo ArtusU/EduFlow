@@ -41,6 +41,18 @@ def create_course(request):
 
     course.save()
 
+    # Lessons
+
+    for lesson in request.data.get("lessons"):
+        tmp_lesson = Lesson.objects.create(
+            course=course,
+            title=lesson.get("title"),
+            slug=slugify(lesson.get("title")),
+            short_description=lesson.get("short_description"),
+            long_description=lesson.get("long_description"),
+            status=Lesson.DRAFT,
+        )
+
     return Response({"course_id": course.id})
 
 

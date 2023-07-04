@@ -131,6 +131,15 @@ export default {
                     console.log('error:', error)
                 })
         },
+        addLesson() {
+            console.log('addLesson')
+
+            this.form.lessons.push({
+                title: '',
+                short_description: '',
+                long_description: ''
+            })
+        }
     }
 }
 </script>
