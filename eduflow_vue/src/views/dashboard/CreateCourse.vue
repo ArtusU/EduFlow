@@ -116,6 +116,21 @@ export default {
                     this.categories = response.data
                 })
         },
+        submitForm(status) {
+            console.log('submitForm')
+            console.log(this.form)
+
+            this.form.status = status
+
+            axios
+                .post('courses/create/', this.form)
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => {
+                    console.log('error:', error)
+                })
+        },
     }
 }
 </script>

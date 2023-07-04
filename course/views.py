@@ -1,4 +1,6 @@
+from random import randint
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -16,6 +18,30 @@ from .serializers import (
     QuizSerializer,
     UserSerializer,
 )
+
+
+@api_view(["POST"])
+def create_course(request):
+    status = request.data.get("status")
+
+    if status == "published":
+        status = "draft"
+
+    course = Course.objects.create(
+        title=request.data.get("title"),
+        slug="%s-%s" % (slugify(request.data.get("title")), randint(1000, 10000)),
+        short_description=request.data.get("short_description"),
+        long_description=request.data.get("long_description"),
+        status=status,
+        created_by=request.user,
+    )
+
+    for id in request.data.get("categories"):
+        course.categories.add(id)
+
+    course.save()
+
+    return Response({"course_id": course.id})
 
 
 @api_view(["GET"])
