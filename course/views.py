@@ -1,4 +1,5 @@
 from random import randint
+
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from rest_framework.decorators import (
@@ -80,7 +81,7 @@ def get_courses(request):
 @authentication_classes([])
 @permission_classes([])
 def get_frontpage_courses(request):
-    courses = Course.objects.all()[0:4]
+    courses = Course.objects.filter(status=Course.PUBLISHED)[0:4]
     serializer = CourseListSerializer(courses, many=True)
     return Response(serializer.data)
 
@@ -91,15 +92,6 @@ def get_frontpage_courses(request):
 def get_categories(request):
     categories = Category.objects.all()
     serializer = CategorySerializer(categories, many=True)
-    return Response(serializer.data)
-
-
-@api_view(["GET"])
-@authentication_classes([])
-@permission_classes([])
-def get_course(request, slug):
-    course = Course.objects.get(slug=slug)
-    serializer = CourseDetailSerializer(course)
     return Response(serializer.data)
 
 
